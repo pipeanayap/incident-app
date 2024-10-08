@@ -9,6 +9,11 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Hola mundo
-        run: echo "Hola mundo"
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Login to DockerHub
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{secrets.DOCKER_PASSWORD}}"
+
+      - name: Build docker image 
+        run: Docker build -t pipeanayaparada/incident_app:v1
       
