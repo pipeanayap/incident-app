@@ -11,8 +11,18 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
+
       - name: Login to DockerHub
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{secrets.DOCKER_PASSWORD}}"
+
       - name: build docker image 
-        run: docker build -t pipeanayaparada/incident_app:v1 .
+        run: docker build -t pipeanayaparada/incident_app:${{github.sha}} .
+
+      - name: Tag latest
+        run: docker tag pipeanayaparada/incident_app:${{github.sha}} pipeanayaparada/incident_app:latest
+
+      - name: push docker image 
+        run: |
+          docker push pipeanayaparada/incident_app:${{github.sha}}
+          docker push pipeanayaparada/incident_app:latest
       
