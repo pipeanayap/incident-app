@@ -1,0 +1,26 @@
+services: 
+  mysql:
+    image: mysql
+    container_name: mysql_container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_incident_app:/var/lib/mysql
+
+  incident-api:
+    image: incident_app:latest
+    depends_on:
+      - mysql
+    container_name: IncidentApp
+    ports:
+      - "3005:3000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+volumes:
+  mysql_incident_app:
